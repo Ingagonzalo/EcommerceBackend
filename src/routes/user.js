@@ -1,5 +1,5 @@
 import express from 'express';
-const router = express.router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
+const router = express.Router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
 import { usersDao } from '../dao/usersDao.js';
 
 

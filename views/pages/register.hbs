@@ -1,21 +1,25 @@
 
   <div class="login-box">
-    <h2>Login</h2>
-    <form id="login" action="/api/usuario/login" method="POST">
+    <h2>Sing Up</h2>
+    <form id="register" action="/api/usuario/register" method="POST">
       <div class="user-box">
         <input type="text" name="user" required>
         <label>Username</label>
+      </div>
+       <div class="user-box">
+        <input type="email" name="email" required>
+        <label>Email</label>
       </div>
       <div class="user-box">
         <input type="password" name="pass" required>
         <label>Password</label>
       </div>
-      <a href="#" type="submit" form="login">
+      <a href="#" type="submit" form="register">
         <span></span>
         <span></span>
         <span></span>
         <span></span>
-        Submit
+        Sing Up
       </a>
     </form>
   </div>
