@@ -17,19 +17,24 @@ router.get('/signup', (req, res) => {
     if (req.session.login) {
         res.redirect('/api/usuario')
     } else {
-        res.render('pages/signup', { status: false })
+        res.render('pages/singup', { status: false })
     }
 })
 
-router.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const { body } = req;
-    const newUser = await usersDao.createUser(body);
+    const newUser = await userDao.createUser(body);
 
     if (newUser) {
-        res.status(200).json({ "Exito✅": "Usuario añadido con el ID " + newUser._id })
+        const now = new Date();
+        const newUserTemplateEmail = htmlNewUserTemplate(newUser._id, now.toLocaleString());
+        // Descomentar si has llenado el .env con tu email y password.
+        //await sendGmail('Nuevo usuario creado', newUserTemplateEmail);
+        res.status(200).json({ "success": "User added with ID " + newUser._id })
+    } else {
+        res.status(400).json({ "error": "there was an error, please verify the body content match the schema" })
     }
-    else
-        res.status(400).json({ "Error❌": "Se ha encontrado un error. Por favor, verifique sus datos he intentelo nuevamente." })
+
 })
 
 router.post('/login', async (req, res) => {
