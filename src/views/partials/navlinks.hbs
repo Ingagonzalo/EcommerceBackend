@@ -1,0 +1,46 @@
+<nav class="navBar">
+
+
+
+        <div  class="navBarItem">
+            <ul class="navBarItemList">
+                <li>
+                    {{#if status}}
+                    🟢 Conectado
+                    {{else}}
+                    🔴 Desconectado
+                    {{/if}}
+                </li>
+                <li class="active"><a class="nav-link" href="/api/usuario">Home</a></li>
+            </ul>
+        </div>
+
+
+    <div class="navBarItem">
+        <a disabled href="/api/usuario/login">
+            <i class="fa-solid fa-user"></i>
+            Log in
+        </a>
+    </div>
+
+    <div class="navBarItem">
+        {{#if status}}
+        <a href="/api/usuario/logout">
+            {{else}}
+            <a disabled href="/api/usuario/logout">
+                {{/if}}
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Log out
+            </a>
+
+    </div>
+    <div class="navBarItem">
+        <a href="/api/usuario/signup">
+            <i class="fa-solid fa-user-plus"></i>
+            Sign Up
+        </a>
+    </div>
+
+
+</nav>

@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
-import { usersDao } from '../dao/usersDao.js';
+import { userDao } from '../dao/userDao.js';
 
 
-const userDao = new usersDao(); // es una clase, esto agrego un nuevo objeto
+const perilDao = new userDao(); // es una clase, esto agrego un nuevo objeto
 
 router.get('/login', async (req, res) => {
     if (req.session.login) { //verifica si el usuario ya inició sesión, i el usuario ya inició sesión, la solicitud se redirige a la ruta /api/usuario
@@ -17,24 +17,29 @@ router.get('/signup', (req, res) => {
     if (req.session.login) {
         res.redirect('/api/usuario')
     } else {
-        res.render('pages/signup', { status: false })
+        res.render('pages/singup', { status: false })
     }
 })
 
-router.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const { body } = req;
-    const newUser = await usersDao.createUser(body);
+    const newUser = await perilDao.createUser(body);
 
     if (newUser) {
-        res.status(200).json({ "Exito✅": "Usuario añadido con el ID " + newUser._id })
+        const now = new Date();
+        const newUserTemplateEmail = htmlNewUserTemplate(newUser._id, now.toLocaleString());
+        // Descomentar si has llenado el .env con tu email y password.
+        //await sendGmail('Nuevo usuario creado', newUserTemplateEmail);
+        res.status(200).json({ "success": "User added with ID " + newUser._id })
+    } else {
+        res.status(400).json({ "error": "there was an error, please verify the body content match the schema" })
     }
-    else
-        res.status(400).json({ "Error❌": "Se ha encontrado un error. Por favor, verifique sus datos he intentelo nuevamente." })
+
 })
 
 router.post('/login', async (req, res) => {
     const { user, pass } = req.body; //se extraen las credenciales de usuario y contraseña del cuerpo de la solicitud utilizando la sintaxis de desestructuración
-    const loggedUser = await usersDao.loginUser({ //se llama al método loginUser del objeto usersDao
+    const loggedUser = await perilDao.loginUser({ //se llama al método loginUser del objeto usersDao
         username: user,
         password: pass
     });
