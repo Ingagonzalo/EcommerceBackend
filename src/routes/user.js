@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
-import { usersDao } from '../dao/usersDao.js';
+import { userDao } from '../dao/userDao.js';
 
 
-const userDao = new usersDao(); // es una clase, esto agrego un nuevo objeto
+const perilDao = new userDao(); // es una clase, esto agrego un nuevo objeto
 
 router.get('/login', async (req, res) => {
     if (req.session.login) { //verifica si el usuario ya inició sesión, i el usuario ya inició sesión, la solicitud se redirige a la ruta /api/usuario
@@ -23,7 +23,7 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', async (req, res) => {
     const { body } = req;
-    const newUser = await userDao.createUser(body);
+    const newUser = await perilDao.createUser(body);
 
     if (newUser) {
         const now = new Date();
@@ -39,7 +39,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { user, pass } = req.body; //se extraen las credenciales de usuario y contraseña del cuerpo de la solicitud utilizando la sintaxis de desestructuración
-    const loggedUser = await usersDao.loginUser({ //se llama al método loginUser del objeto usersDao
+    const loggedUser = await perilDao.loginUser({ //se llama al método loginUser del objeto usersDao
         username: user,
         password: pass
     });
