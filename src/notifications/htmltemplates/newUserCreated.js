@@ -1,4 +1,4 @@
-export const htmlNewUserTemplate = (id, date) => {
+export const newUserTemplate = (id, date) => {
     return `
     <h2>¡Nuevo usuario Creado!</h2>
     <p>Se ha creado un nuevo usuario a través de la API</p>
