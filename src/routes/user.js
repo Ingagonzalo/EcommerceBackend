@@ -1,10 +1,10 @@
 import express from 'express';
 const router = express.Router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
-import { userDao } from '../dao/userDao.js';
+import { userService } from '../services/user.service.js';
 import { newUserTemplate } from '../notifications/htmltemplates/newUserCreated.js'
 
 
-const perfilDao = new userDao(); // es una clase, esto agrego un nuevo objeto
+const perfilDao = new userService(); // es una clase, esto agrego un nuevo objeto
 
 router.get('/login', async (req, res) => {
     if (req.session.login) { //verifica si el usuario ya inició sesión, i el usuario ya inició sesión, la solicitud se redirige a la ruta /api/usuario

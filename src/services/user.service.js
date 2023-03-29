@@ -2,7 +2,7 @@ import "../config/db.js";
 import { UsuariosModel } from "../modules/usuarios.modules.js";
 import logger from "../loggers/Log4jsLogger.js";
 
-export class userDao {
+export class userService {
 
     ID_FIELD = "_id";
     USERNAME_FIELD = 'username';
