@@ -1,5 +1,7 @@
 import { fork } from 'child_process';
 import os from 'node:os';
+const randomNumbersGeneratorFork = fork('../utils/functions/randomNumersGenerator.js')
+
 
 export const getInfo = async (req, res) => {
     const processInfo = {
@@ -14,7 +16,6 @@ export const getInfo = async (req, res) => {
     res.status(200).json(processInfo);
 }
 
-const randomNumbersGeneratorFork = fork('./src/functions/randomNumbersGenerator.js')
 
 export const getRandomNumbers = async (req, res) => {
 

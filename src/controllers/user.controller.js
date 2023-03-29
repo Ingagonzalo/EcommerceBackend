@@ -1,6 +1,6 @@
 import { userService } from '../services/user.service.js';
-import { newUserTemplate } from '../notifications/htmltemplates/newUserCreated.js'
-import { sendGmail } from "../utils/notifications/gmail/EmailSender.js";
+import { newUserTemplate } from '../utils/notifications/htmltemplates/newUserCreated.js'
+import { sendGmail } from "../utils/notifications/emailSender.js"
 
 
 const perfilDao = new userService(); // es una clase, esto agrego un nuevo objeto
