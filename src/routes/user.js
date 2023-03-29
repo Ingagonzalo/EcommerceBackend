@@ -1,9 +1,10 @@
 import express from 'express';
 const router = express.Router(); //un método de la biblioteca Express.js que permite crear manejadores de rutas modulares.
 import { userDao } from '../dao/userDao.js';
+import { newUserTemplate } from '../notifications/htmltemplates/newUserCreated.js'
 
 
-const perilDao = new userDao(); // es una clase, esto agrego un nuevo objeto
+const perfilDao = new userDao(); // es una clase, esto agrego un nuevo objeto
 
 router.get('/login', async (req, res) => {
     if (req.session.login) { //verifica si el usuario ya inició sesión, i el usuario ya inició sesión, la solicitud se redirige a la ruta /api/usuario
@@ -17,17 +18,17 @@ router.get('/signup', (req, res) => {
     if (req.session.login) {
         res.redirect('/api/usuario')
     } else {
-        res.render('pages/singup', { status: false })
+        res.render('pages/signup', { status: false })
     }
 })
 
 router.post('/signup', async (req, res) => {
     const { body } = req;
-    const newUser = await perilDao.createUser(body);
+    const newUser = await perfilDao.createUser(body);
 
     if (newUser) {
         const now = new Date();
-        const newUserTemplateEmail = htmlNewUserTemplate(newUser._id, now.toLocaleString());
+        const newUserTemplateEmail = newUserTemplate(newUser._id, now.toLocaleString());
         // Descomentar si has llenado el .env con tu email y password.
         //await sendGmail('Nuevo usuario creado', newUserTemplateEmail);
         res.status(200).json({ "success": "User added with ID " + newUser._id })
@@ -39,7 +40,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { user, pass } = req.body; //se extraen las credenciales de usuario y contraseña del cuerpo de la solicitud utilizando la sintaxis de desestructuración
-    const loggedUser = await perilDao.loginUser({ //se llama al método loginUser del objeto usersDao
+    const loggedUser = await perfilDao.loginUser({ //se llama al método loginUser del objeto usersDao
         username: user,
         password: pass
     });
