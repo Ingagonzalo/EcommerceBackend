@@ -1,14 +1,14 @@
 import express from "express";
-import { ProductoDao } from "../dao/ProductoDao.js";
+import { productService } from "../services/product.service.js";
 import { authMiddleware } from "../middleware/Auth.js";
 const router = express.Router();
-const productoDao = new ProductoDao();
+const productService = new productService();
 import logger from "../loggers/Log4jsLogger.js";
 
 // GET api/productos
 
 router.get('/', async (_req, res) => {
-    const products = await productoDao.getAll();
+    const products = await productService.getAll();
     products
         ? res.status(200).json(products)
         : res.status(400).json({ "error": "there was a problem when trying to get the products" })
@@ -19,7 +19,7 @@ router.get('/', async (_req, res) => {
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const product = await productoDao.getProductById(id);
+    const product = await productService.getProductById(id);
 
     product
         ? res.status(200).json(product)
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 // POST api/productos
 router.post('/', authMiddleware, async (req, res) => {
     const { body } = req;
-    const newProduct = await productoDao.createProduct(body);
+    const newProduct = await productService.createProduct(body);
 
     newProduct
         ? res.status(200).json({ "success": "Product added with ID " + newProduct._id })
@@ -43,7 +43,7 @@ router.post('/', authMiddleware, async (req, res) => {
 router.put('/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
     const { body } = req;
-    const wasUpdated = await productoDao.updateProductById(id, body);
+    const wasUpdated = await productService.updateProductById(id, body);
 
     wasUpdated
         ? res.status(200).json({ "success": "product updated" })
@@ -55,7 +55,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
 
 router.delete('/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
-    const wasDeleted = await productoDao.deleteProductById(id)
+    const wasDeleted = await productService.deleteProductById(id)
 
     wasDeleted
         ? res.status(200).json({ "success": "product successfully removed" })

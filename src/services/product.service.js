@@ -2,10 +2,10 @@ import "../config/db.js";
 import { ProductosModel } from "../modules/productos.modules.js";
 import logger from "../loggers/Log4jsLogger.js";
 
-export class ProductoDao {
+export class productService { //ProductoDao
 
     ID_FIELD = "_id";
-    
+
     static async exists(id) {
         try {
             return await ProductosModel.findById(id);
@@ -22,11 +22,11 @@ export class ProductoDao {
             return false;
         }
     }
-    
+
     async getProductById(objectId) {
         try {
             const product = await ProductosModel.findOne({
-                [this.ID_FIELD] : objectId
+                [this.ID_FIELD]: objectId
             })
             return product;
         } catch (error) {
@@ -34,7 +34,7 @@ export class ProductoDao {
             return false;
         }
     }
-    
+
     async createProduct(object) {
         try {
             return await ProductosModel.create(object)
@@ -43,14 +43,14 @@ export class ProductoDao {
             return false;
         }
     }
-    
+
     async updateProductById(id, object) {
         try {
             await ProductosModel.findByIdAndUpdate(
                 {
-                    [this.ID_FIELD] : id
+                    [this.ID_FIELD]: id
                 },
-                object, 
+                object,
                 {
                     runValidators: true
                 })
@@ -60,14 +60,14 @@ export class ProductoDao {
             return false;
         }
     }
-    
+
     async deleteProductById(id) {
         try {
-            return await ProductosModel.findByIdAndDelete({[this.ID_FIELD]: id})
+            return await ProductosModel.findByIdAndDelete({ [this.ID_FIELD]: id })
         } catch (error) {
             logger.error(error);
             return false;
         }
     }
-    
+
 }
