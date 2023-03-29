@@ -1,6 +1,6 @@
 import "../config/db.js";
 import { ProductosModel } from "../modules/productos.modules.js";
-import logger from "../loggers/Log4jsLogger.js";
+import logger from "../utils/loggers/Log4jsLogger.js";
 
 export class productService { //ProductoDao
 

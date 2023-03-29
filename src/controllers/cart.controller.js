@@ -1,61 +1,58 @@
-import express from "express";
-import { ProductoDao } from "../dao/ProductoDao.js";
-import logger from "../loggers/Log4jsLogger.js";
 import { cartService } from "../services/cart.service.js";
+import { productService } from "../services/product.service.js";
 
-const router = express.Router();
-const cartService = new cartService();
+const cartController = new cartService();
 
 // POST /api/carrito
-router.post('/', async (_req, res) => {
+export const create = async (req, res) => {
     const newCart = await cartService.createCart();
 
     newCart
         ? res.status(200).json({ "success": "Product added with ID " + newCart._id })
         : res.status(500).json({ "error": "there was an error" })
 
-})
+}
 
 // DELETE /api/carrito/id
-router.delete('/:id', async (req, res) => {
+export const deleteCart = async (req, res) => {
     const { id } = req.params;
-    const wasDeleted = await cartService.deleteCartById(id);
+    const wasDeleted = await cartController.deleteCartById(id);
 
     wasDeleted
         ? res.status(200).json({ "success": "cart successfully removed" })
         : res.status(404).json({ "error": "cart not found" })
 
-})
+}
 
 // POST /api/carrito/:id/productos
 
-router.post('/:id/productos', async (req, res) => {
+export const saveProduct = async (req, res) => {
     const { id } = req.params;
     const { body } = req;
 
-    const productExists = await ProductoDao.exists(body.productId);
+    const productExists = await productService.exists(body.productId);
 
     if (productExists) {
-        await cartService.saveProductToCart(id, body)
+        await cartController.saveProductToCart(id, body)
     } else {
         res.status(404).json({ "error": "product not found" });
     }
 
-})
+}
 
 // GET /api/carrito/:id/productos
-router.get('/:id/productos', async (req, res) => {
+export const getProducts = async (req, res) => {
     const { id } = req.params;
-    const cartProducts = await cartService.getAllProductsFromCart(id);
+    const cartProducts = await cartController.getAllProductsFromCart(id);
 
     cartProducts
         ? res.status(200).json(cartProducts)
         : res.status(404).json({ "error": "cart not found" })
-})
+}
 
 
 // DELETE /api/carrito/:id/productos/:id_prod
-router.delete('/:id/productos/:id_prod', async (req, res) => {
+export const removeProduct = async (req, res) => {
     const { id, id_prod } = req.params;
 
     const wasDeleted = await cartService.deleteProductFromCart(id, id_prod);
@@ -64,6 +61,5 @@ router.delete('/:id/productos/:id_prod', async (req, res) => {
         ? res.status(200).json({ "success": "that product is no longer in the cart" })
         : res.status(400).json({ "error": "there was some problem" })
 
-})
+}
 
-export default router;

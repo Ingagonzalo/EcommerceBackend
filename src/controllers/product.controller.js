@@ -1,10 +1,10 @@
 import { productService } from "../services/product.service.js";
-const productService = new productService();
+const productController = new productService();
 
 // GET api/productos
 
 export const getAll = async (_req, res) => {
-    const products = await productService.getAll();
+    const products = await productController.getAll();
     products
         ? res.status(200).json(products)
         : res.status(400).json({ "error": "Ha ocurrido un problema al intentar mostrarte los productos❌" })
@@ -15,7 +15,7 @@ export const getAll = async (_req, res) => {
 
 export const getById = async (req, res) => {
     const { id } = req.params;
-    const product = await productService.getProductById(id);
+    const product = await productController.getProductById(id);
 
     product
         ? res.status(200).json(product)
@@ -27,7 +27,7 @@ export const getById = async (req, res) => {
 // POST api/productos
 export const create = async (req, res) => {
     const { body } = req;
-    const newProduct = await productService.createProduct(body);
+    const newProduct = await productController.createProduct(body);
 
     newProduct
         ? res.status(200).json({ "success": "✅Producto añadido con el siguien ID: " + newProduct._id })
@@ -39,7 +39,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
     const { id } = req.params;
     const { body } = req;
-    const wasUpdated = await productService.updateProductById(id, body);
+    const wasUpdated = await productController.updateProductById(id, body);
 
     wasUpdated
         ? res.status(200).json({ "success": "🔁Producto actualizado" })
@@ -51,7 +51,7 @@ export const update = async (req, res) => {
 
 export const remove = async (req, res) => {
     const { id } = req.params;
-    const wasDeleted = await productService.deleteProductById(id)
+    const wasDeleted = await productController.deleteProductById(id)
 
     wasDeleted
         ? res.status(200).json({ "success": "🗑Producto eliminado con éxito" })
@@ -60,4 +60,3 @@ export const remove = async (req, res) => {
 
 
 
-export default router;
