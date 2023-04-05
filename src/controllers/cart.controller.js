@@ -1,11 +1,15 @@
-import { cartService } from "../services/cart.service.js";
-import { productService } from "../services/product.service.js";
+//import { cartService } from "../services/cart.service.js";
+//import { productService } from "../services/product.service.js";
+import config from "../config/config.js";
+import CartDaoFactory from "../daos/cartDaoFactory.js";
+import productDaoFactory from "../daos/productDaoFactory.js";
 
-const cartController = new cartService();
+const cartDao = CartDaoFactory.getDao(config.db)
+
 
 // POST /api/carrito
 export const create = async (req, res) => {
-    const newCart = await cartService.createCart();
+    const newCart = await cartDao.create();
 
     newCart
         ? res.status(200).json({ "success": "Product added with ID " + newCart._id })
@@ -16,7 +20,7 @@ export const create = async (req, res) => {
 // DELETE /api/carrito/id
 export const deleteCart = async (req, res) => {
     const { id } = req.params;
-    const wasDeleted = await cartController.deleteCartById(id);
+    const wasDeleted = await cartDao.deleteById(id);
 
     wasDeleted
         ? res.status(200).json({ "success": "cart successfully removed" })
@@ -33,7 +37,7 @@ export const saveProduct = async (req, res) => {
     const productExists = await productService.exists(body.productId);
 
     if (productExists) {
-        await cartController.saveProductToCart(id, body)
+        await cartDao.update(id, body)
     } else {
         res.status(404).json({ "error": "product not found" });
     }
@@ -43,7 +47,7 @@ export const saveProduct = async (req, res) => {
 // GET /api/carrito/:id/productos
 export const getProducts = async (req, res) => {
     const { id } = req.params;
-    const cartProducts = await cartController.getAllProductsFromCart(id);
+    const cartProducts = await cartDao.getAll(id);
 
     cartProducts
         ? res.status(200).json(cartProducts)
@@ -55,7 +59,7 @@ export const getProducts = async (req, res) => {
 export const removeProduct = async (req, res) => {
     const { id, id_prod } = req.params;
 
-    const wasDeleted = await cartService.deleteProductFromCart(id, id_prod);
+    const wasDeleted = await cartDao.delete(id, id_prod);
 
     wasDeleted
         ? res.status(200).json({ "success": "that product is no longer in the cart" })
