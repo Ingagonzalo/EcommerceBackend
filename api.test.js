@@ -4,7 +4,7 @@ import supertest from "supertest";
 let request;
 let createdProduct
 let getProducts;
-
+/*prueba*/
 const product = {
     title: "motherboard",
     thumbnail: "https://mla-s1-p.mlstatic.com/971557-MLA46012928724_052021-F.jpg",
